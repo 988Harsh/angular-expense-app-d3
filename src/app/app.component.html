@@ -14,9 +14,17 @@
             </ul>
         </div>
     </div>
-    <div class="row text-center justify-content-center ">
-        <div class="input-text-div">
-            <input type="text">
-        </div>
+    <div class="row text-center justify-content-center my-5">
+        <form (submit)="addExpense($event)">
+            <div class="row">
+                <div class="text-input-div mx-2">
+                    <input type="text" placeholder="description..." name="description" required>
+                </div>
+                <div class="text-input-div ">
+                    <input type="number" placeholder="amount" name="amount" required>
+                </div>
+                <button class="mx-2"><i class="fa fa-plus" aria-hidden="true"></i></button>
+            </div>
+        </form>
     </div>
 </div>

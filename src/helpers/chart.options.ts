@@ -26,19 +26,16 @@ export class ChartsOptions implements OnInit {
         let start;
         let stop;
         let total = 0;
-        this.exApi.getExpensesAll().subscribe((data: any[]) => {
+        const sub = this.exApi.getExpensesAll().subscribe((data: any[]) => {
             this.expenses = data;
             start = dateformat(data[0]['created_at'], "yyyy-mm-dd");
             stop = dateformat(data[data.length - 1]['created_at'], "yyyy-mm-dd");
             this.expenses.forEach(element => {
-                dataAmount.push(element['amount']);
+                dataAmount.push(+element['amount']);
                 total += element['amount'];
                 created_at.push(timeAgo.format(Date.parse(element['created_at'])));
             });
-            console.log(dataAmount);
-            console.log(created_at);
             this.chartOption = {
-
                 chart: {
                     type: 'column'
                 },
@@ -66,8 +63,12 @@ export class ChartsOptions implements OnInit {
                 }],
             }
             this.subject.next(this.chartOption);
+            dataAmount = [];
+            created_at = [];
+            start = null;
+            stop = null;
+            total = 0;
         })
-
     }
 
     getOptions() {

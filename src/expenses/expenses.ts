@@ -1,5 +1,5 @@
-import { BehaviorSubject } from 'rxjs';
-
+import { BehaviorSubject, pipe } from 'rxjs';
+import { share, shareReplay } from "rxjs/operators";
 export class ExpensesProvider {
 
     expenses = [{
@@ -68,6 +68,12 @@ export class ExpensesProvider {
     }];
     sendExpenses = new BehaviorSubject<any>(this.expenses);
     getExpensesAll() {
-        return this.sendExpenses;
+        return this.sendExpenses.asObservable();
+    }
+
+    update(exp = null) {
+        if (exp) this.expenses.push(exp);
+
+        this.sendExpenses.next(this.expenses);
     }
 }

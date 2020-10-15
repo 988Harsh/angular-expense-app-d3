@@ -1,0 +1,22 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="box-size-1" id="container">
+        </div>
+        <div class="box-size-2">
+            <ul class="p-1" style="list-style-type: none;"
+                *ngFor="let expense of expenses; let i = index; trackBy: file" [attr.data-index]="i">
+                <li>
+                    <button class=" col-10 button-in-list"
+                        style="pointer-events: none;">{{expense.description}}</button>
+                    <button class="col-1 text-center" (click)="removeExpense(i)"><i class="fa fa-trash"
+                            aria-hidden="true"></i></button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row text-center justify-content-center ">
+        <div class="input-text-div">
+            <input type="text">
+        </div>
+    </div>
+</div>

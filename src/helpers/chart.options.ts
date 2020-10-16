@@ -1,5 +1,5 @@
 import { Options } from 'highcharts';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ExpensesProvider } from '../expenses/expenses';
 import dateformat from 'dateformat';
 import TimeAgo from 'javascript-time-ago';

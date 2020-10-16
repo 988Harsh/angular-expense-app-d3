@@ -30,7 +30,7 @@ export class ChartsOptions {
             stop = dateformat(data[data.length - 1].created_at, 'yyyy-mm-dd');
             this.expenses.forEach(element => {
                 dataAmount.push(+element.amount);
-                total += element.amount;
+                total += +element.amount;
                 createdAt.push(timeAgo.format(Date.parse(element.created_at)));
             });
             this.chartOption = {

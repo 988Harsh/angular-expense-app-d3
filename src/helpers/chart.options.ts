@@ -1,7 +1,6 @@
 import { Options } from 'highcharts';
 import { Injectable } from '@angular/core';
 import { ExpensesProvider } from '../expenses/expenses';
-// import dateformat from 'dateformat';
 import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -23,8 +22,8 @@ export class ChartsOptions {
             this.expenses = data;
             const dt1 = new Date(data[0].created_at);
             const dt2 = new Date(data[data.length - 1].created_at);
-            const start = dt1.getDate()+'-'+dt1.getMonth()+'-'+dt1.getFullYear();
-            const stop = dt2.getDate()+'-'+dt2.getMonth()+'-'+dt2.getFullYear();
+            const start = dt1.getDate() + '-' + dt1.getMonth() + '-' + dt1.getFullYear();
+            const stop = dt2.getDate() + '-' + dt2.getMonth() + '-' + dt2.getFullYear();
             this.expenses.forEach(element => {
                 dataAmount.push(+element.amount);
                 total += +element.amount;
@@ -79,15 +78,20 @@ export class ChartsOptions {
         const years = Math.floor(months / 12);
         if (seconds === 0) {
             return 'Just now';
-        } if (seconds < 60) {
+        }
+        if (seconds < 60) {
             return seconds + ' sec(s) Ago';
-        } if (minutes < 60) {
+        }
+        if (minutes < 60) {
             return minutes + ' min(s) Ago';
-        } if (hours < 24) {
+        }
+        if (hours < 24) {
             return hours + ' hr(s) Ago';
-        } if (days < 30) {
+        }
+        if (days < 30) {
             return days + ' day(s) Ago';
-        } if (months < 12) {
+        }
+        if (months < 12) {
             return months + ' month(s) Ago';
         } else {
             return years + ' year(s) Ago';

@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
-import * as Highcharts from "highcharts";
+import { Component, OnInit } from '@angular/core';
+import * as Highcharts from 'highcharts';
 import { shareReplay } from 'rxjs/operators';
 import { ExpensesProvider } from 'src/expenses/expenses';
-import { ChartsOptions } from "../helpers/chart.options";
+import { ChartsOptions } from '../helpers/chart.options';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'simple-crud-using-styles';
 
   expenses;
@@ -45,7 +45,7 @@ export class AppComponent {
       updated_at: new Date()
     };
     this.expenseProvider.update(exp);
-    $event.target.description.value = "";
+    $event.target.description.value = '';
     $event.target.amount.value = 0;
   }
 

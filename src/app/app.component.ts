@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { shareReplay } from 'rxjs/operators';
 import { ExpensesProvider } from 'src/expenses/expenses';
 import { ChartsOptions } from '../helpers/chart.options';
 
@@ -19,7 +18,24 @@ export class AppComponent implements OnInit {
     });
   }
 
+  chartClicked($event) {
+    if ($event.point) {
+      this.removeExpense($event.point.index);
+    } else {
+      this.labelClickDelete($event.path[1]);
+    }
+  }
 
+  labelClickDelete(t) {
+    const temp = [];
+    document.querySelector('.highcharts-xaxis-labels').childNodes.forEach(each => {
+      temp.push(each);
+    });
+    const i = temp.indexOf(t);
+    if (i !== -1) {
+      this.removeExpense(i);
+    }
+  }
 
   ngOnInit(): void {
     this.getExpenses();

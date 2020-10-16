@@ -1,7 +1,7 @@
 import { Options } from 'highcharts';
 import { Injectable } from '@angular/core';
 import { ExpensesProvider } from '../expenses/expenses';
-import dateformat from 'dateformat';
+// import dateformat from 'dateformat';
 import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -19,12 +19,12 @@ export class ChartsOptions {
 
             const dataAmount = [];
             const createdAt = [];
-            let start;
-            let stop;
             let total = 0;
             this.expenses = data;
-            start = dateformat(data[0].created_at, 'yyyy-mm-dd');
-            stop = dateformat(data[data.length - 1].created_at, 'yyyy-mm-dd');
+            const dt1 = new Date(data[0].created_at);
+            const dt2 = new Date(data[data.length - 1].created_at);
+            const start = dt1.getDate()+'-'+dt1.getMonth()+'-'+dt1.getFullYear();
+            const stop = dt2.getDate()+'-'+dt2.getMonth()+'-'+dt2.getFullYear();
             this.expenses.forEach(element => {
                 dataAmount.push(+element.amount);
                 total += +element.amount;
@@ -70,54 +70,29 @@ export class ChartsOptions {
     }
 
     timeSince(date) {
-        const seconds = Math.floor((new Date().getTime() - date) / 1000);
-        let interval = seconds / 31536000;
-        if (interval > 1) {
-            if (Math.floor(interval) === 1) {
-                return Math.floor(interval) + ' year ago';
-            } else {
-                return Math.floor(interval) + ' years ago';
-            }
-        }
-        interval = seconds / 2592000;
-        if (interval > 1) {
-            if (Math.floor(interval) === 1) {
-                return Math.floor(interval) + ' month ago';
-            } else {
-                return Math.floor(interval) + ' months ago';
-            }
-        }
-        interval = seconds / 86400;
-        if (interval > 1) {
-            if (Math.floor(interval) === 1) {
-                return Math.floor(interval) + ' day ago';
-            } else {
-                return Math.floor(interval) + ' days ago';
-            }
-        }
-        interval = seconds / 3600;
-        if (interval > 1) {
-            if (Math.floor(interval) === 1) {
-                return Math.floor(interval) + ' hour ago';
-            } else {
-                return Math.floor(interval) + ' hours ago';
-            }
-        }
-        interval = seconds / 60;
-        if (interval > 1) {
-            if (Math.floor(interval) === 1) {
-                return Math.floor(interval) + ' minute ago';
-            } else {
-                return Math.floor(interval) + ' minutes ago';
-            }
-        }
-        if (Math.floor(seconds) === 1) {
-            return Math.floor(seconds) + ' second ago';
+        const ms = new Date().getTime() - date;
+        const seconds = Math.floor(ms / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+        const months = Math.floor(days / 30);
+        const years = Math.floor(months / 12);
+        if (seconds === 0) {
+            return 'Just now';
+        } if (seconds < 60) {
+            return seconds + ' sec(s) Ago';
+        } if (minutes < 60) {
+            return minutes + ' min(s) Ago';
+        } if (hours < 24) {
+            return hours + ' hr(s) Ago';
+        } if (days < 30) {
+            return days + ' day(s) Ago';
+        } if (months < 12) {
+            return months + ' month(s) Ago';
         } else {
-            return Math.floor(seconds) + ' seconds ago';
+            return years + ' year(s) Ago';
         }
     }
-
 
 }
 

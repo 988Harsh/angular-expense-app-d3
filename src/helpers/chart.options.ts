@@ -18,13 +18,13 @@ export class ChartsOptions {
 
     Options() {
         TimeAgo.addLocale(en);
-        const timeAgo = new TimeAgo('en-US');
-        let dataAmount = [];
-        let createdAt = [];
-        let start;
-        let stop;
-        let total = 0;
-        const sub = this.exApi.getExpensesAll().subscribe((data: any[]) => {
+        this.exApi.getExpensesAll().subscribe((data: any[]) => {
+            const timeAgo = new TimeAgo('en-US');
+            const dataAmount = [];
+            const createdAt = [];
+            let start;
+            let stop;
+            let total = 0;
             this.expenses = data;
             start = dateformat(data[0].created_at, 'yyyy-mm-dd');
             stop = dateformat(data[data.length - 1].created_at, 'yyyy-mm-dd');
@@ -61,11 +61,6 @@ export class ChartsOptions {
                 }],
             };
             this.subject.next(this.chartOption);
-            dataAmount = [];
-            createdAt = [];
-            start = null;
-            stop = null;
-            total = 0;
         });
     }
 

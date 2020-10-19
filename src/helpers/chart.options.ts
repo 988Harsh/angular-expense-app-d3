@@ -15,7 +15,6 @@ export class ChartsOptions {
 
     Options() {
         this.exApi.getExpensesAll().subscribe((data: any[]) => {
-
             const dataAmount = [];
             const createdAt = [];
             let total = 0;

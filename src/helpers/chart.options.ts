@@ -69,34 +69,27 @@ export class ChartsOptions {
     }
 
     timeSince(date) {
-        const ms = new Date().getTime() - date;
-        const seconds = Math.floor(ms / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
-        const months = Math.floor(days / 30);
-        const years = Math.floor(months / 12);
-        if (seconds === 0) {
-            return 'Just now';
-        }
-        if (seconds < 60) {
-            return seconds + ' sec(s) Ago';
-        }
-        if (minutes < 60) {
-            return minutes + ' min(s) Ago';
-        }
-        if (hours < 24) {
-            return hours + ' hr(s) Ago';
-        }
-        if (days < 30) {
-            return days + ' day(s) Ago';
-        }
-        if (months < 12) {
-            return months + ' month(s) Ago';
-        } else {
-            return years + ' year(s) Ago';
-        }
-    }
+        const minute = 60;
+        const hour   = minute * 60;
+        const day    = hour   * 24;
+        const month  = day    * 30;
+        const year   = day    * 365;
 
+        const elapsed = Math.floor((Date.now() - date) / 1000);
+
+        if (elapsed < minute) {
+            return 'just now';
+        }
+
+        // get an array in the form of [time ago number, time ago metric]
+        const a = elapsed < hour  && [Math.floor(elapsed / minute), 'min'] ||
+                elapsed < day   && [Math.floor(elapsed / hour), 'hr'] ||
+                elapsed < month && [Math.floor(elapsed / day), 'day'] ||
+                elapsed < year  && [Math.floor(elapsed / month), 'month'] ||
+                [Math.floor(elapsed / year), 'year'];
+
+        // pluralise and append 'ago'
+        return a[0] + ' ' + a[1] + (a[0] === 1 ? '' : 's') + ' ago';
+    }
 }
 

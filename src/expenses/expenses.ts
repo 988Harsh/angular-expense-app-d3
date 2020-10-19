@@ -1,4 +1,4 @@
-import { BehaviorSubject, pipe } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 export class ExpensesProvider {
 
     expenses = [{

@@ -70,10 +70,10 @@ export class ChartsOptions {
 
     timeSince(date) {
         const minute = 60;
-        const hour   = minute * 60;
-        const day    = hour   * 24;
-        const month  = day    * 30;
-        const year   = day    * 365;
+        const hour = minute * 60;
+        const day = hour * 24;
+        const month = day * 30;
+        const year = day * 365;
 
         const elapsed = Math.floor((Date.now() - date) / 1000);
 
@@ -82,11 +82,11 @@ export class ChartsOptions {
         }
 
         // get an array in the form of [time ago number, time ago metric]
-        const a = elapsed < hour  && [Math.floor(elapsed / minute), 'min'] ||
-                elapsed < day   && [Math.floor(elapsed / hour), 'hr'] ||
-                elapsed < month && [Math.floor(elapsed / day), 'day'] ||
-                elapsed < year  && [Math.floor(elapsed / month), 'month'] ||
-                [Math.floor(elapsed / year), 'year'];
+        const a = elapsed < hour && [Math.floor(elapsed / minute), 'min'] ||
+            elapsed < day && [Math.floor(elapsed / hour), 'hr'] ||
+            elapsed < month && [Math.floor(elapsed / day), 'day'] ||
+            elapsed < year && [Math.floor(elapsed / month), 'month'] ||
+            [Math.floor(elapsed / year), 'year'];
 
         // pluralise and append 'ago'
         return a[0] + ' ' + a[1] + (a[0] === 1 ? '' : 's') + ' ago';

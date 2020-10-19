@@ -62,7 +62,7 @@ export class ChartsOptions {
                 this.chartOption = {
                     title: {
                         text: 'No Expenses Left',
-                        style: { color: '#ff0000' }
+                        style: { color: '#ff0000', fontSize: '2rem' }
                     },
                     yAxis: {
                         title: {

@@ -47,7 +47,7 @@ export class ExpensesProvider {
         type: 'household and others',
         amount: 50.0,
         created_at: '2020-09-12T09:36:48.000+00:00',
-        updated_at: '2020-09-12T09:36:48.000+00:00'
+        updated_at: '2020-09-27T09:36:48.000+00:00'
     },
     {
         id: 13,
@@ -55,7 +55,7 @@ export class ExpensesProvider {
         type: 'food',
         amount: 150.0,
         created_at: '2020-09-12T09:45:11.000+00:00',
-        updated_at: '2020-09-12T09:45:11.000+00:00'
+        updated_at: '2020-09-27T09:45:11.000+00:00'
     },
     {
         id: 14,
@@ -63,7 +63,7 @@ export class ExpensesProvider {
         type: 'shopping',
         amount: 50.0,
         created_at: '2020-09-12T09:52:41.000+00:00',
-        updated_at: '2020-09-12T09:52:41.000+00:00'
+        updated_at: '2020-09-27T09:52:41.000+00:00'
     }];
     sendExpenses = new BehaviorSubject<any>(this.expenses);
     getExpensesAll() {

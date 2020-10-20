@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as Highcharts from 'highcharts';
 import { ExpensesProvider } from 'src/expenses/expenses';
-import { ChartsOptions } from '../helpers/chart.options';
+import * as d3 from 'd3';
 
 @Component({
   selector: 'app-root',
@@ -12,34 +11,18 @@ export class AppComponent implements OnInit {
   title = 'simple-crud-using-styles';
 
   expenses;
-  constructor(private options: ChartsOptions, private expenseProvider: ExpensesProvider) {
-    this.options.getOptions().subscribe(data => {
-      Highcharts.chart('container', data);
-    });
-  }
+  svg;
+  private margin = 50;
+  private width = 485 - (this.margin * 2);
+  private height = 400 - (this.margin * 2);
+  constructor(private expenseProvider: ExpensesProvider) {
 
-  chartClicked($event) {
-    if ($event.point) {
-      this.removeExpense($event.point.index);
-    } else {
-      this.labelClickDelete($event.path[1]);
-    }
-  }
-
-  labelClickDelete(t) {
-    const temp = [];
-    document.querySelector('.highcharts-xaxis-labels').childNodes.forEach(each => {
-      temp.push(each);
-    });
-    const i = temp.indexOf(t);
-    if (i !== -1) {
-      this.removeExpense(i);
-    }
   }
 
   ngOnInit(): void {
     this.getExpenses();
-    this.options.Options();
+    this.createSvg();
+    this.drawBars(this.expenses);
   }
 
   getExpenses() {
@@ -65,4 +48,45 @@ export class AppComponent implements OnInit {
     $event.target.amount.value = 0;
   }
 
+  private createSvg(): void {
+    this.svg = d3.select("#container")
+      .append("svg")
+      .attr("width", this.width + this.margin + this.margin)
+      .attr("height", this.height + this.margin + this.margin)
+      .append("g")
+      .attr("transform",
+        "translate(" + this.margin + "," + this.margin + ")");
+  }
+
+  private drawBars(data: any[]): void {
+    console.log(data);
+
+    console.log(new Date(data[0].created_at));
+
+
+    let x = d3.scaleTime()
+      .domain(data.map(d => { return d.created_at; }))
+      .range([0, this.width]);
+    this.svg.append("g")
+      .attr("transform", "translate(0," + this.height + ")")
+      .call(d3.axisBottom(x));
+
+    let y = d3.scaleLinear()
+      .domain([0, d3.max(data, function (d) { return +d.amount; })])
+      .range([this.height, 0]);
+    this.svg.append("g")
+      .call(d3.axisLeft(y));
+
+    this.svg.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+      .attr("d", d3.line()
+        .x(function (d) { return x(d.created_at) })
+        .y(function (d) { return y(d.amount) })
+      )
+
+
+  }
 }

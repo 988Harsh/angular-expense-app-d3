@@ -60,33 +60,85 @@ export class AppComponent implements OnInit {
 
   private drawBars(data: any[]): void {
     console.log(data);
+    const dataAmount = [];
+    const createdAt = [];
+    let total = 0;
+    data.forEach(element => {
+      dataAmount.push(+element.amount);
+      total += +element.amount;
+      createdAt.push(this.timeSince(Date.parse(element.created_at)));
+    });
 
-    console.log(new Date(data[0].created_at));
+    let min = data.map(d => d.created_at).sort((a, b) => a - b)[0];
+    let max = data.map(d => d.created_at).sort((a, b) => a - b).slice(-1)[0];
+    console.log("min ", min, " max: ", max);
 
+    console.log(" extent map data created_at ", d3.extent(data.map(d => d.created_at)));
+    console.log("extent function d created_at", d3.extent(data, function (d) { return d.created_at; }));
+    console.log("map", data.map(d => this.timeSince(Date.parse(d.created_at))));
 
-    let x = d3.scaleTime()
-      .domain(data.map(d => { return d.created_at; }))
-      .range([0, this.width]);
+    function onlyUnique(value, index, self) {
+      return self.indexOf(value) === index;
+    }
+    console.log(data.map(d => this.timeSince(Date.parse(d.created_at))).filter(onlyUnique));
+
+    let x = d3.scaleOrdinal()
+      .domain(data.map(d => this.timeSince(Date.parse(d.created_at))))
+      .range(data.map((d, i) => 60 * i))
     this.svg.append("g")
       .attr("transform", "translate(0," + this.height + ")")
       .call(d3.axisBottom(x));
 
+    console.log("start map x()");
+
+    data.forEach(d => {
+      console.log(x(d.created_at));
+    })
+
+
     let y = d3.scaleLinear()
-      .domain([0, d3.max(data, function (d) { return +d.amount; })])
+      .domain(d3.extent(data, (d) => d.amount))
       .range([this.height, 0]);
     this.svg.append("g")
       .call(d3.axisLeft(y));
 
     this.svg.append("path")
       .datum(data)
+      .attr('d', d3.line()
+        .x((d) => { return x(d.created_at) })
+        .y((d) => { return y(d.amount) })
+      )
       .attr("fill", "none")
       .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
-      .attr("d", d3.line()
-        .x(function (d) { return x(d.created_at) })
-        .y(function (d) { return y(d.amount) })
-      )
-
-
+      .attr("stroke-width", 1.5);
+    // console.log("x(d created at): ", x(d.created_at));
+    // console.log("y(d amount): ", y(d.amount));
   }
+
+  timeSince(date) {
+    const minute = 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+    const month = day * 30;
+    const year = day * 365;
+
+    const elapsed = Math.floor((Date.now() - date) / 1000);
+
+    if (elapsed === 0) {
+      return 'Just now';
+    }
+
+    // get an array in the form of [time ago number, time ago metric]
+    const a = elapsed < minute && [elapsed, 'seconds'] ||
+      elapsed < hour && [Math.floor(elapsed / minute), 'min'] ||
+      elapsed < day && [Math.floor(elapsed / hour), 'hr'] ||
+      elapsed < month && [Math.floor(elapsed / day), 'day'] ||
+      elapsed < year && [Math.floor(elapsed / month), 'month'] ||
+      [Math.floor(elapsed / year), 'year'];
+
+    // pluralise and append 'ago'
+    return a[0] + ' ' + a[1] + (a[0] === 1 ? '' : 's') + ' ago';
+  }
+
+
 }

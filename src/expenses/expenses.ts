@@ -14,7 +14,7 @@ export class ExpensesProvider {
         description: 'Chips',
         type: 'food',
         amount: 232.0,
-        created_at: '2020-09-12T05:58:59.000+00:00',
+        created_at: '2020-10-12T05:58:59.000+00:00',
         updated_at: '2020-09-12T05:58:59.000+00:00'
     },
     {
@@ -54,7 +54,7 @@ export class ExpensesProvider {
         description: 'Maggi!',
         type: 'food',
         amount: 150.0,
-        created_at: '2020-09-12T09:45:11.000+00:00',
+        created_at: '2020-10-19T09:45:11.000+00:00',
         updated_at: '2020-09-27T09:45:11.000+00:00'
     },
     {

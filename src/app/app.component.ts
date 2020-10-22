@@ -74,11 +74,6 @@ export class AppComponent implements OnInit {
     // console.log("extent function d created_at", d3.extent(data, function (d) { return d.created_at; }));
     // console.log("map", data.map(d => this.timeSince(Date.parse(d.created_at))));
 
-    function onlyUnique(value, index, self) {
-      return self.indexOf(value) === index;
-    }
-    console.log(data.map(d => this.timeSince(Date.parse(d.created_at))).filter(onlyUnique));
-
     let x = d3.scaleOrdinal()
       .domain(data.map((d, i) => i + ' ' + this.timeSince(Date.parse(d.created_at))))
       .range(data.map((d, i) => this.width / data.length * i))

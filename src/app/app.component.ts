@@ -60,6 +60,7 @@ export class AppComponent implements OnInit {
 
   private drawBars(data: any[]): void {
     console.log(data);
+
     const dataAmount = [];
     const createdAt = [];
     let total = 0;
@@ -69,13 +70,9 @@ export class AppComponent implements OnInit {
       createdAt.push(this.timeSince(Date.parse(element.created_at)));
     });
 
-    let min = data.map(d => d.created_at).sort((a, b) => a - b)[0];
-    let max = data.map(d => d.created_at).sort((a, b) => a - b).slice(-1)[0];
-    console.log("min ", min, " max: ", max);
-
-    console.log(" extent map data created_at ", d3.extent(data.map(d => d.created_at)));
-    console.log("extent function d created_at", d3.extent(data, function (d) { return d.created_at; }));
-    console.log("map", data.map(d => this.timeSince(Date.parse(d.created_at))));
+    // console.log(" extent map data created_at ", d3.extent(data.map(d => d.created_at)));
+    // console.log("extent function d created_at", d3.extent(data, function (d) { return d.created_at; }));
+    // console.log("map", data.map(d => this.timeSince(Date.parse(d.created_at))));
 
     function onlyUnique(value, index, self) {
       return self.indexOf(value) === index;
@@ -89,10 +86,10 @@ export class AppComponent implements OnInit {
       .attr("transform", "translate(0," + this.height + ")")
       .call(d3.axisBottom(x));
 
-    console.log("start map x()");
-    data.forEach(d => {
-      console.log(x(d.created_at));
-    })
+    // console.log("start map x()");
+    // data.forEach(d => {
+    //   console.log(x(d.created_at));
+    // })
 
     let y = d3.scaleLinear()
       .domain([0, d3.max(data, (d) => d.amount)])
@@ -100,10 +97,10 @@ export class AppComponent implements OnInit {
     this.svg.append("g")
       .call(d3.axisLeft(y));
 
-    console.log("start map y()");
-    data.forEach(d => {
-      console.log(y(d.amount));
-    });
+    // console.log("start map y()");
+    // data.forEach(d => {
+    //   console.log(y(d.amount));
+    // });
 
     this.svg.append("path")
       .datum(data)
@@ -114,8 +111,6 @@ export class AppComponent implements OnInit {
       .attr("fill", "none")
       .attr("stroke", "steelblue")
       .attr("stroke-width", 1.5);
-
-
   }
 
   timeSince(date) {

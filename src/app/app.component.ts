@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   expenses;
   svg;
   private margin = 50;
-  private width = 485 - (this.margin * 2);
+  private width = 550 - (this.margin * 2);
   private height = 400 - (this.margin * 2);
   constructor(private expenseProvider: ExpensesProvider) {
 
@@ -83,8 +83,8 @@ export class AppComponent implements OnInit {
     console.log(data.map(d => this.timeSince(Date.parse(d.created_at))).filter(onlyUnique));
 
     let x = d3.scaleOrdinal()
-      .domain(data.map(d => this.timeSince(Date.parse(d.created_at))))
-      .range(data.map((d, i) => 60 * i))
+      .domain(data.map((d, i) => i + ' ' + this.timeSince(Date.parse(d.created_at))))
+      .range(data.map((d, i) => this.width / data.length * i))
     this.svg.append("g")
       .attr("transform", "translate(0," + this.height + ")")
       .call(d3.axisBottom(x));
@@ -95,12 +95,16 @@ export class AppComponent implements OnInit {
       console.log(x(d.created_at));
     })
 
-
     let y = d3.scaleLinear()
       .domain(d3.extent(data, (d) => d.amount))
       .range([this.height, 0]);
     this.svg.append("g")
       .call(d3.axisLeft(y));
+
+    console.log("start map y()");
+    data.forEach(d => {
+      console.log(y(d.amount));
+    })
 
     this.svg.append("path")
       .datum(data)

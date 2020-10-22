@@ -90,13 +90,12 @@ export class AppComponent implements OnInit {
       .call(d3.axisBottom(x));
 
     console.log("start map x()");
-
     data.forEach(d => {
       console.log(x(d.created_at));
     })
 
     let y = d3.scaleLinear()
-      .domain(d3.extent(data, (d) => d.amount))
+      .domain([0, d3.max(data, (d) => d.amount)])
       .range([this.height, 0]);
     this.svg.append("g")
       .call(d3.axisLeft(y));
@@ -104,7 +103,7 @@ export class AppComponent implements OnInit {
     console.log("start map y()");
     data.forEach(d => {
       console.log(y(d.amount));
-    })
+    });
 
     this.svg.append("path")
       .datum(data)
@@ -115,8 +114,8 @@ export class AppComponent implements OnInit {
       .attr("fill", "none")
       .attr("stroke", "steelblue")
       .attr("stroke-width", 1.5);
-    // console.log("x(d created at): ", x(d.created_at));
-    // console.log("y(d amount): ", y(d.amount));
+
+
   }
 
   timeSince(date) {
